@@ -21,6 +21,7 @@ status:{
         message:"${VALUE} is incorrect"
     },
     required:true,
+    ref:"user"
 }
 
 },{

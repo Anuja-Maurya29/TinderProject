@@ -105,6 +105,7 @@ const review = async (req, res) => {
   }
 
 console.log(requestId, loggedInUser._id,"checking")
+
   const connectionExist = await connectionModel.findOne({
     _id: new mongoose.Types.ObjectId(requestId) ,
      toUser:new mongoose.Types.ObjectId(loggedInUser._id),
@@ -124,7 +125,6 @@ console.log(requestId, loggedInUser._id,"checking")
   connectionExist.status=status
   const connectionUpdated = await connectionExist.save()
   
-
   res.status(201).send(`${loggedInUser.firstName} ${status} request `)
 
  }
