@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser';
 import dbConnect from './config/database.js';
 import authRouter from './routes/authRoutes.js';
-import userRouter from './routes/userRouter.js';
+import userRouter from './routes/userRoutes.js';
 import profileRouter from './routes/profileRoutes.js';
 import requestRouter from './routes/connectionRoutes.js';
 import { authMiddleware } from './middlewares/authMiddleware.js';

@@ -7,7 +7,9 @@ const requestRouter = express.Router()
 
 requestRouter.post('/send/:status/:toUser',authMiddleware,connectionControllers.request)
 
-// connectionRequestRouter.post('/review/:status/:requestId',authMiddleware)
+requestRouter.post('/review/:status/:requestId',authMiddleware,connectionControllers.review)
 
+// requestRouter.get('/getAllRequest',authMiddleware,connectionControllers.getAllRequest)
 
  export  default requestRouter
+ 

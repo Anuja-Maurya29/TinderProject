@@ -88,6 +88,8 @@ const userSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+ // creating index on email for login
+// userSchema.index({email:1})
 
 // creating a model
 

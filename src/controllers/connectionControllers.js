@@ -1,6 +1,8 @@
 import express from "express";
 import connectionModel from "../models/connectionSchema.js";
 import userModel from "../models/userSchema.js";
+import mongoose from "mongoose";
+import { ObjectId } from "mongodb";
 
 //intrested or ignore handlers
 
@@ -9,13 +11,13 @@ const request = async (req, res) => {
   try {
     
     const {id}=req.user
-    // console.log(req.user,"req.user");
-    
+    // console.log(typeof(id));
     
     const fromUser = id
+   
     const toUser = req.params.toUser;
     const status = req.params.status;
-    console.log(toUser);
+  
 
     const allowedStatus = ["ignore", "intrested"];
 
@@ -27,6 +29,7 @@ const request = async (req, res) => {
     }
 
     //same user
+  
     if(fromUser===toUser){
         return res.status(400).json({
             sucess:true,
@@ -37,7 +40,7 @@ const request = async (req, res) => {
 //if user does not exist
 const userExist = await userModel.findById(toUser)
 // console.log(userExist,"userExist");
-console.log(userExist.firstName,"fname");
+
 if(!userExist){
     return res.status(404).json({
         sucess:false,
@@ -79,10 +82,77 @@ if(!userExist){
   }
 };
 
+
+
 const review = async (req, res) => {
-  const userID = req.id;
-};
+  //loggend user 
+
+ try{
+   const {id} = req.user
+
+  const loggedInUser= req.user
+
+  const status=req.params.status
+  const requestId = req.params.requestId
+
+  const allowedStatus = ["accepted","rejected"]
+ 
+  if(!allowedStatus.includes(status)){
+    return res.status(400).json({
+      sucess:false, 
+      message:"status invalid"
+    })
+  }
+
+console.log(requestId, loggedInUser._id,"checking")
+  const connectionExist = await connectionModel.findOne({
+    _id: new mongoose.Types.ObjectId(requestId) ,
+     toUser:new mongoose.Types.ObjectId(loggedInUser._id),
+     status:"intrested"
+  })
+
+  if(!connectionExist){
+    return res.status(400).json({
+      sucess:false,
+      message:"Connection  dosen't exists"
+    })
+  }
+  
+    
+
+  //modify the status  of connection
+  connectionExist.status=status
+  const connectionUpdated = await connectionExist.save()
+  
+
+  res.status(201).send(`${loggedInUser.firstName} ${status} request `)
+
+ }
+ catch(error){
+  res.status(400).json({
+    sucess:false,
+    message:error.message
+  })
+ }
+
+}
+
+
 
 export default {
-  request,
+  request,review
 };
+
+
+/*
+console.log(Object.hasOwn(ob,"id"),"checking for id");
+console.log(Object.hasOwn(ob,"_id"),"checking for _id");
+req.user => contains whole user document
+
+ const {id} = req.user -> return id in string
+ const {_id} = req.user -> returns id Object
+
+
+  console.log(Object.hasOwn(req.user,"_id"),"checking for _id"); => returns false
+
+*/

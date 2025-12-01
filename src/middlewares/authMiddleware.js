@@ -15,17 +15,19 @@ import userModel from '../models/userSchema.js'
 
     
 const verify = jwt.verify(token,process.env.SECRET)
+console.log(verify,"verify");
 
 const {id} =verify
 // console.log(id,"id");
 
-const userId = await userModel.findById(id)
+const user = await userModel.findById(id)
 // console.log(userId,"userrrr");
-if(!userId){
+if(!user){
     throw new error("user not found")
 }
 
-req.user=userId;
+req.user=user
+console.log(req.user,"data set");
 
 next()
 

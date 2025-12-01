@@ -24,7 +24,7 @@ import jwt from 'jsonwebtoken'
 
     }
 
-   return res.send("profiel page")
+   return res.send("profile page")
 
     console.log("profile created");
 }
