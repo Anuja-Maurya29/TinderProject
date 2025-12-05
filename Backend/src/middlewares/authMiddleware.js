@@ -4,12 +4,12 @@ import userModel from '../models/userSchema.js'
 
   try{
       const token = req.cookies.token
-    // console.log(token,"token");
+    console.log(token,"token");
 
     if(!token){
         res.status(401).json({
             sucess:false,
-            message:"Unauthorised user"
+            message:"Unauthorised user pls login"
         })
     }
 

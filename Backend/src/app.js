@@ -1,6 +1,6 @@
 import  dotenv  from 'dotenv'
 import express from 'express'
-import mongoose from 'mongoose'
+import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import dbConnect from './config/database.js';
 import authRouter from './routes/authRoutes.js';
@@ -12,12 +12,18 @@ import { authMiddleware } from './middlewares/authMiddleware.js';
 dotenv.config();
 const app = express();
 
-
-
+//origin : to know where the frontend is hosted
+//credentials: send and receive the cookie 
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials:true,
+}));
+ 
 dbConnect();
 app.use(cookieParser());
 
 app.use(express.json());
+app.use("/uploads", express.static("public/uploads"));
 app.use('/api/auth',authRouter)
 app.use('/api/user',userRouter)
 app.use('/api/profile',profileRouter)

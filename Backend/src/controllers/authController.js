@@ -5,8 +5,9 @@ import { generateToken } from "../service/generateToken.js";
 import jwt from "jsonwebtoken";
 
 const signUp = async (req, res) => {
+console.log(req.body,"req.body");
   const { firstName, lastName, email, password } = req.body;
-//   console.log(fname, lname, email, password);
+ 
 
   if (!firstName || !lastName || !email || !password) {
     return res.status(400).json({
@@ -90,7 +91,7 @@ const signIn = async (req, res) => {
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(400).json({
+      return res.status(401).json({
         sucess: false,
         message: "Invalid Credentials",
       });
@@ -107,6 +108,9 @@ const signIn = async (req, res) => {
     user.password = undefined;
 
     res.cookie("token", token, cookieOption);
+
+  
+    
     res.status(200).json({
       sucess: true,
       message: "User login sucessfully",

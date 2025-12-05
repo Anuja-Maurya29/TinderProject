@@ -7,7 +7,7 @@ try{
 
 }
 catch(error){
-    console.log(error)
+    console.log("db error",error)
     process.exit(1);
 }
 

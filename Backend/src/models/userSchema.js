@@ -39,7 +39,7 @@ const userSchema = mongoose.Schema(
       
       image:{
         type:String,
-        default:"https://pixabay.com/illustrations/icon-profile-user-clip-art-7797704/"
+        default:"/uploads/dummy.png"
       },
       country: {
         type: String,

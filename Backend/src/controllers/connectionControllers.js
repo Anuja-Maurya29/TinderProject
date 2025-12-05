@@ -10,10 +10,10 @@ const request = async (req, res) => {
   //from user A to user B with status
   try {
     
-    const {id}=req.user
+    const loggedInUser=req.user
     // console.log(typeof(id));
     
-    const fromUser = id
+    const fromUser = loggedInUser._id
    
     const toUser = req.params.toUser;
     const status = req.params.status;

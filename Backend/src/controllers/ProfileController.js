@@ -4,9 +4,17 @@ import jwt from 'jsonwebtoken'
 
 
 
+
  const getProfile= async (req,res)=>{
     const token = req.cookies.token
-    const {id}= jwt.decode(token)
+    // console.log(jwt.verify(token,process.env.SECRET));
+    const {id}= jwt.verify(token,process.env.SECRET)
+    if(!token){
+      return  res.status(401).json({
+            sucess:"false",
+            message:"token invalid pls login"
+        })
+    }
 
     try{
 
@@ -24,9 +32,6 @@ import jwt from 'jsonwebtoken'
 
     }
 
-   return res.send("profile page")
-
-    console.log("profile created");
 }
 
  const createProfile= async (req,res)=>{
