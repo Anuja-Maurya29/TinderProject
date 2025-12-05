@@ -1,10 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { tinderStore } from './app/store.js'
+import { Provider } from 'react-redux'
 import './index.css'
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  <Provider store={tinderStore}>
     <App />
-  </StrictMode>,
+  </Provider>
+  
 )
