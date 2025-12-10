@@ -36,23 +36,26 @@ import jwt from 'jsonwebtoken'
 
  const createProfile= async (req,res)=>{
     const  token = req.cookies.token;
-    const {id}= jwt.decode(token)
+    const {id}= jwt.verify(token,process.env.SECRET)
     console.log(id,"id");
 
 const data=req.body
+console.log(data,"upaded data from frontend");
 try{
     
     if(data.skills.length>10){
-        res.status(400).send("update not allowed")
+        return res.status(400).send("update not allowed")
 
     }
-    const userProfile = await userModel.findByIdAndUpdate(id,data,{runValidators:true})
+    const userProfile = await userModel.findByIdAndUpdate(id,data,{new:true,runValidators:true})
     if(userProfile){
-        res.status(200).send("Profile created Sucessfully")
+       
+        res.status(200).send(userProfile)
     }
     else{
         res.send("Profile did't created")
     }
+    console.log(userProfile," data updfated from backend");
 
 }
 catch(error){

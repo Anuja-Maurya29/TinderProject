@@ -7,7 +7,7 @@ import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import profileRouter from './routes/profileRoutes.js';
 import requestRouter from './routes/connectionRoutes.js';
-import { authMiddleware } from './middlewares/authMiddleware.js';
+
 
 dotenv.config();
 const app = express();
@@ -15,12 +15,14 @@ const app = express();
 //origin : to know where the frontend is hosted
 //credentials: send and receive the cookie 
 app.use(cors({
-    origin:"http://localhost:5173",
+    origin:"http://localhost:5173", //why hardcoded?
     credentials:true,
 }));
  
 dbConnect();
 app.use(cookieParser());
+
+
 
 app.use(express.json());
 app.use("/uploads", express.static("public/uploads"));
@@ -38,6 +40,6 @@ app.get('/home',(req,res)=>{
     res.send("this is home page")
 })
 
-const PORT = process.env.PORT||5000
+const PORT = process.env.PORT||8000
 
 app.listen(PORT,()=>console.log(`server is listning on port${PORT}`))

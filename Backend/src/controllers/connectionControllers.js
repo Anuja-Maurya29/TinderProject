@@ -104,11 +104,11 @@ const review = async (req, res) => {
     })
   }
 
-console.log(requestId, loggedInUser._id,"checking")
+
 
   const connectionExist = await connectionModel.findOne({
-    _id: new mongoose.Types.ObjectId(requestId) ,
-     toUser:new mongoose.Types.ObjectId(loggedInUser._id),
+    _id:requestId ,
+     toUser:loggedInUser._id,
      status:"intrested"
   })
 
@@ -144,15 +144,3 @@ export default {
 };
 
 
-/*
-console.log(Object.hasOwn(ob,"id"),"checking for id");
-console.log(Object.hasOwn(ob,"_id"),"checking for _id");
-req.user => contains whole user document
-
- const {id} = req.user -> return id in string
- const {_id} = req.user -> returns id Object
-
-
-  console.log(Object.hasOwn(req.user,"_id"),"checking for _id"); => returns false
-
-*/

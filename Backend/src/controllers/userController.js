@@ -50,12 +50,17 @@ const connectionRequest = await connectionModel.find({
   ]
 }).populate("fromUser",["firstName","lastName"]).populate("toUser",["firstName","lastName"])
 
-
+const data = connectionRequest.map((request)=>{
+  if(request.fromUser._id.toString()===loggedInUser._id.toString()){
+    return request.toUser;
+  }
+  return request.fromUser
+});
 
 res.status(200).json({
   sucess:true,
   message:"connections found",
-  data:connectionRequest
+  data:data
 
 })
 
