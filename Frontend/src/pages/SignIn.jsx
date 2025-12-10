@@ -13,6 +13,21 @@ const SignIn =  () => {
   const dispatch = useDispatch()
   const [formdata,setFormData] = useState({})
   const [errorMsg,setErrorMsg]= useState("")
+  const [type,setType] = useState("password")
+
+
+  const togglePassword=()=>{
+ 
+    if(type==="password"){
+      
+      setType("text")
+    }
+    else{
+
+    
+      setType("password")
+    }
+  }
 
   const handleChange=(event)=>{
     
@@ -44,11 +59,9 @@ const SignIn =  () => {
 }
 catch(error){
   
-  if(error.response.status===401){
+  if(error){
     setErrorMsg(error.response.data.message)
     
-    
-  // alert("Unauthorised user")
    return navigate('/signin')
 
 }
@@ -59,49 +72,119 @@ catch(error){
 
   return (
     <>
-<section className="bg-gray-50 dark:bg-gray-900">
-  <div className="flex flex-col items-center justify-center px-6 py-7 mx-auto md:h-screen lg:py-0">
-    <div className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-      <img className="w-8 h-8 mr-2" src="src/assets/flame.jpg" alt="logo" />
-      TechDating   
-    </div>
-    <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-      <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-        <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-          Sign in to your account
-        </h1>
-        <form  onSubmit={handleLogin} className="space-y-4 md:space-y-6" action="#">
-          <div>
-            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-            <input onChange={handleChange} type="email" defaultValue={formdata.email} name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required />
-          </div>
-          <div>
-            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-            <input onChange={handleChange} type="password" defaultValue={formdata.password} name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-start">
-              <div className="flex items-center h-5">
-                <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required />
-              </div>
-              <div className="ml-3 text-sm">
-                <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">Remember me</label>
-              </div>
-            </div>
-          </div>
-          <p className="text-red-500">{errorMsg}</p>
-          <button  type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
-          <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-            Don’t have an account yet?{" "}
-            <Link to="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">
-                              Signup here
-                            </Link>
-          </p>
-        </form>
+<section className="min-h-screen flex items-center justify-center bg-linear-to-r from-slate-500 to-slate-800 px-4">
+
+ 
+  <div className="bg-gray-900 rounded-3xl shadow-2xl p-10 w-full max-w-6xl min-h-[700px] flex items-center justify-center">
+
+    
+    <div className="bg-white rounded-2xl shadow-xl border border-gray-300 overflow-hidden grid md:grid-cols-2 w-full max-w-5xl min-h-[550px]">
+
+      
+    <div className="flex flex-col justify-center items-center p-10 w-full">
+
+
+  <div className="w-full max-w-sm ">
+
+    <h1 className="text-3xl font-extrabold text-gray-900 mb-8 text-center">
+      Sign in to your account
+    </h1>
+
+    <form onSubmit={handleLogin} className="space-y-6 ">
+
+     
+      <div className="text-black">
+        <label className="block mb-2 text-sm font-semibold text-gray-700 text-left">
+          Your email
+        </label>
+        <input
+          onChange={handleChange}
+          type="email"
+          name="email"
+          defaultValue={formdata.email}
+          placeholder="name@company.com"
+          required
+          className=" text-black  w-full max-w-sm p-3 rounded-lg border-2 border-gray-300 
+          focus:ring-4 focus:ring-slate-400/40 
+          focus:border-slate-600 outline-none transition "
+        />
       </div>
+
+      <div className="relative text-black flex flex-row">
+        <label className="block mb-2 text-sm font-semibold text-gray-700 text-left">
+          Password
+        </label>
+
+        <input
+          onChange={handleChange}
+          type={type}
+          name="password"
+          placeholder="••••••••"
+          required
+          className="w-full max-w-sm p-3 pr-14 rounded-lg border-2 border-gray-900 "
+          
+         
+        />
+
+       <div className="bg-blue-950 cursor-pointer text-amber-100 w-20 p-2 ">
+         <button className="text-center"
+          type="button"
+          onClick={togglePassword}
+         
+        >
+          SHOW
+        </button>
+       </div>
+      </div>
+
+  
+      {errorMsg &&(
+
+       <p className="text-red-500 text-sm font-medium bg-red-100 py-2 rounded-lg mb-4">
+  {errorMsg}
+</p>
+      )}
+
+ 
+      <button
+        type="submit"
+        className=" cursor-pointer m-2 w-full max-w-sm bg-linear-to-r from-slate-700 to-slate-900 
+        text-white py-3 rounded-lg font-bold text-md
+        shadow-md hover:shadow-xl hover:scale-[1.02]
+        transition-all duration-200 active:scale-95"
+      >
+        Sign in
+      </button>
+
+
+      <p className="text-sm text-gray-500 text-center">
+        Don’t have an account?{" "}
+        <Link
+          to="/signup"
+          className="text-slate-800 font-bold hover:underline"
+        >
+          Signup here
+        </Link>
+      </p>
+
+    </form>
+  </div>
+</div>
+
+
+    
+      <div className="hidden md:flex items-center justify-center bg-gray-100 p-10 border-l border-gray-300">
+        <img
+          src="src/assets/connection.jpg"
+          alt="Login Visual"
+          className="max-h-[400px] object-contain rounded-xl"
+        />
+      </div>
+
     </div>
   </div>
 </section>
+
 
     </>
   );

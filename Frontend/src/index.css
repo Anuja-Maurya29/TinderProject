@@ -1,4 +1,21 @@
 @import "tailwindcss";
+/* Tailwind v4 - required */
+@import "tailwindcss/preflight";
+@tailwind utilities;
+
+/* Optional: custom component styles */
+@layer components {
+  /* Example custom component using @apply */
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium;
+  }
+}
+
+/* Optional: custom utilities if needed */
+@layer utilities {
+  /* .text-shadow { text-shadow: 0 2px 6px rgba(0,0,0,0.12); } */
+}
+
 @plugin "daisyui";
 
 

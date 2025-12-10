@@ -61,8 +61,12 @@ useEffect(()=>{
     )
   }
 
-    <Outlet/>
-    <Footer/>
+    <div className='h-180'>
+      <Outlet/>
+    </div>
+<div className=' shrink-0'>
+      <Footer/>
+</div>
 
 </div>
  </>

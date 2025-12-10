@@ -1,3 +1,5 @@
+
+
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector} from 'react-redux'
@@ -6,6 +8,7 @@ import { BASE_URL } from '../utils/constants'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { removeUser } from '../features/userSlice'
+
 
 const NavBar = () => {
 
@@ -28,6 +31,7 @@ navigate('/signin')
     console.log(error);
 
   }
+  
 
 }
 
@@ -44,12 +48,12 @@ navigate('/signin')
     <span className="text-xl font-bold">TechDating</span>
   </div> 
 
-  <div className="flex gap-2">
+  <div className="flex gap-2 ">
 
-  <Link to='/'><button>Home</button></Link>
-  <Link to='/feed'><button>Explore</button></Link>
+  <Link to='/'><button className='cursor-pointer'>Home</button></Link>
+  <Link to='/feed'><button className='cursor-pointer'>Explore</button></Link>
    
-<Link to='/signin'><button>Login</button></Link>
+<Link to='/signin'><button className='cursor-pointer'>{user?"Logout":"login"}</button></Link>
 {
   user &&(
     <div className="dropdown dropdown-end mx-5 flex gap-6">
@@ -57,10 +61,17 @@ navigate('/signin')
       <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
        
            <div className="w-10 rounded-full">
-          <img
+          {user.image ?(
+           <img
             alt="Profile Image"
             src={BASE_URL+ user.image}
           />
+          ):
+           <img
+            alt="Profile Image"
+            src="src/assets/dummy.png"
+          />
+          }
         </div>
         
 

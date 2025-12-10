@@ -7,6 +7,7 @@ import Feed from "../pages/Feed";
 import Profile from "../pages/Profile";
 import Requests from "../pages/Request";
 import Connections from "../pages/Connection";
+import EditProfile from "../pages/EditProfile";
 
 const Routing = () => {
   return (
@@ -16,6 +17,7 @@ const Routing = () => {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/editProfile" element={<EditProfile/>}/>
         <Route path="/connections" element={<Connections />} />
         <Route path="/requests" element={<Requests />} />
       </Route>

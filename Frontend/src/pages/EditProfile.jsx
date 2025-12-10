@@ -1,32 +1,59 @@
-import React, { useState } from "react";
-import UserCard from "../components/UserCard";
+import React,{useState}  from "react";
+import UserCard from '../components/UserCard'
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
-import { addUser } from  '../features/userSlice'
+import { addUser } from '../features/userSlice'
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-const EditProfile = ({ user }) => {
-  const [firstName, setFirstname] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
-  const [photoURL, setPhotoURL] = useState(user.photoURL);
-  const [age, setAge] = useState(user.age || "");
-  const [gender, setGender] = useState(user.gender);
-  const [about, setAbout] = useState(user.about);
+const EditProfile = () => {
+
+  const userDetails = useSelector((state)=>state.user.userData)
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+
+   const getUsers =async ()=>{
+    if(userDetails) return ;
+    const result = await axios.get(BASE_URL+"/api/profile/getProfile",{withCredentials:true})
+    console.log(result.data ,"api call");
+    dispatch(addUser(result.data))
+
+  }
+
+  useEffect(()=>{
+    getUsers()
+
+  },[userDetails])
+
+
+  const user = useSelector((state)=>state.user.userData)
+
+  console.log(user,"user dataaaaaa");
+  const [firstName, setFirstname] = useState(user.firstName||"")
+  const [lastName, setLastName] = useState(user.lastName||"")
+  const [image, setImage] = useState(user.image||"")
+  const [age, setAge] = useState(user.age || "")
+  const [gender, setGender] = useState(user.gender||"");
+  const [about, setAbout] = useState(user.about||"");
   const [skills, setSkills] = useState(user.skills || []);
   const [error, setError] = useState("");
   const [showToast, setShowToast] = useState(false);
-  const dispatch = useDispatch();
+
+   
+
 
   const saveProfile = async () => {
-    //clearing the errors
+   
     setError("");
     try {
-      const res = await axios.post(
+      const res = await axios.patch(
         BASE_URL + "/api/profile/createProfile",
         {
           firstName,
           lastName,
-          photoURL,
+          image,
           age,
           gender,
           about,
@@ -36,17 +63,22 @@ const EditProfile = ({ user }) => {
           withCredentials: true,
         }
       );
-      dispatch(addUser(res.data.data));
+      console.log(res,"response");
+      dispatch(addUser(res.data));
+      navigate('/profile')
+
       setShowToast(true);
       setTimeout(() => {
         setShowToast(false);
       }, 3000);
     } catch (error) {
-      setError(error.response.data);
+      console.log(error);
+      // setError(error.response.data);
     }
   };
 
   return (
+ 
     <>
       <div className="flex justify-center  my-10 max ">
         <div className="flex justify-center mx-10 ">
@@ -89,12 +121,12 @@ const EditProfile = ({ user }) => {
                 </label>
                 <label className="form-control w-full max-w-xs my-2">
                   <div className="label">
-                    <span className="label-text">PhotoURL</span>
+                    <span className="label-text">image url</span>
                   </div>
                   <input
                     type="text"
-                    value={photoURL}
-                    onChange={(e) => setPhotoURL(e.target.value)}
+                    value={image}
+                    onChange={(e) => setImage(e.target.value)}
                     className="input input-bordered w-full max-w-xs"
                   />
                 </label>
@@ -108,7 +140,7 @@ const EditProfile = ({ user }) => {
                     </div>
                     <ul
                       tabIndex={0}
-                      className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow"
+                      className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
                     >
                       <li>
                         <button onClick={() => setGender("Male")}>Male</button>
@@ -160,9 +192,7 @@ const EditProfile = ({ user }) => {
             </div>
           </div>
         </div>
-        <UserCard
-          user={{ firstName, lastName, photoURL, about, age, gender , skills }}
-        />
+       
       </div>
       {showToast && (
         <div className="toast toast-top toast-center pt-20 ">

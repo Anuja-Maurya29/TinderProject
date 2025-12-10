@@ -1,18 +1,17 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequests, removeRequest } from "../features/requestSlice"
+import { addRequests,removeRequest } from "../features/requestSlice"
+import { useEffect } from "react";
 
 const Requests = () => {
   const dispatch = useDispatch();
-  const requests = useSelector((store) => store.request);
-  console.log(requests);
 
   const reviewRequest = async (status, _id) => {
     try {
       const result = await axios.post(
-        BASE_URL + "/request/review" + "/" + status + "/" + _id,
+        BASE_URL + "/api/request/review" + "/" + status + "/" + _id,
         {},
         { withCredentials: true }
       );
@@ -26,22 +25,32 @@ const Requests = () => {
 
   const fetchRequests = async () => {
     try {
-      const requests = await axios.get(BASE_URL + "user/getAllRequest", {
+      const connectionRequests = await axios.get(BASE_URL + "/api/user/getAllRequest", {
         withCredentials: true,
       });
-      dispatch(addRequests(requests.data.connectionRequests));
-      //   console.log(requests.data.connectionRequests);
-    } catch (error) {
-      console.log(error);
+      // console.log(connectionRequests.data.data, "apiiii requests data");
+      const userData = connectionRequests.data.data
+      console.log(userData,"userDataaa");
+      dispatch(addRequests(userData));
+     
+    }
+     catch (error) {
+      console.log(error.message);
     }
   };
   
 
-  useState(() => {
+  useEffect(() => {
     fetchRequests();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+
+  const requests = useSelector((state) => state.request.list);
+  console.log(requests,"request redux data");
+
   if (!requests) return;
-  if (requests.length == 0)
+  if (requests.length === 0)
     return (
       <>
         <h1 className="flex justify-center text-2xl my-10 text-green-300">
@@ -51,32 +60,25 @@ const Requests = () => {
     );
 
   return (
+   
     <div className=" text-center my-10">
       <h1 className="font-bold text-3xl text-pink-400 p-4">
         Requests ({requests.length})
       </h1>
-      {requests.map((request) => {
-        const { _id, firstName, lastName, photoURL, age, gender, about } =
-          request.fromUserId;
+      {requests?.map((request) => {
+        const { _id, firstName, lastName} = request.fromUser;
 
         return (
           <div
             key={_id}
             className="flex justify-between items-center m-2 p-2  rounded-lg bg-base-300 w-2/3 mx-auto"
           >
-            <div>
-              <img
-                alt="photo"
-                className="w-14 h-14 rounded-full object-contain"
-                src={photoURL}
-              />
-            </div>
+           
             <div className="text-left m-4 p-4 ">
               <h2 className="font-bold text-xl">
                 {firstName + " " + lastName}
               </h2>
-              {age && gender && <p>{age + " " + gender}</p>}
-              <p>{about}</p>
+            
             </div>
             <div className="">
               <button

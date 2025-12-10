@@ -13,17 +13,18 @@ const UserCard = ({ user }) => {
 
   console.log("Extracted Skills:", skills); // Debugging
 
-  const handleSendRequest = async (status, userId) => {
+  const handleSendRequest = async (status, toUser) => {
     try {
       const result = await axios.post(
-        BASE_URL + "/api/request/send/" + status + "/" + userId,
+        
+        BASE_URL + "/api/request/send/" + status + "/" + toUser,
         {},
         {
           withCredentials: true,
         }
       );
       console.log(result,"removed user");
-      dispatch(removeUserFromFeed(userId));
+      dispatch(removeUserFromFeed(toUser));
     } catch (error) {
       console.log(error);
     }
@@ -32,12 +33,12 @@ const UserCard = ({ user }) => {
   return (
     <div className="card grid-rows-1 bg-base-300 w-96 shadow-xl p-3">
       <figure>
-        <img src={BASE_URL+image} alt="Shoes" />
+        <img src={BASE_URL+image} alt="userProfile" />
       </figure>
       <div className="card-body">
         <h2 className="card-title">{firstName + " " + lastName}</h2>
         {age && gender && <p>{age + ", " + gender}</p>}
-        <p>{about}</p>
+        {about&& <p>{about}</p>}
         {skills && skills.length > 0 && (
           <div>
             <h3 className="font-semibold">Skills:</h3>
@@ -57,7 +58,7 @@ const UserCard = ({ user }) => {
           <button
             className="btn btn-accent"
             onClick={() => {
-              handleSendRequest("ignored", _id);
+              handleSendRequest("ignore", _id);
             }}
           >
             Ignore

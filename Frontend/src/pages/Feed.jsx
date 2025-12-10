@@ -7,10 +7,11 @@ import UserCard from "../components/UserCard";
 
 const Feed = () => {
   const dispatch = useDispatch();
+  
   const feed = useSelector((store) => store.feed);
   console.log(feed);
   const getFeed = async () => {
-    if (feed) return;
+    // if (feed) return;
     try {
       const feed = await axios.get(BASE_URL + "/api/user/explore", {
         withCredentials: true,
@@ -23,7 +24,8 @@ const Feed = () => {
   };
   useEffect(() => {
     getFeed();
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   if (!feed) return;
 
@@ -33,9 +35,10 @@ const Feed = () => {
     );
   return (
     feed && (
+
       <div className="flex flex-col items-center gap-4 my-5">
-        {feed && feed.map((user) => <UserCard key={user._id} user={user} />)}
-        {/* <UserCard user={feed[0]} /> */}
+        {/* {feed && feed.map((user) => <UserCard key={user._id} user={user} />)} */}
+        <UserCard user={feed[0]} />
       </div>
     )
   );

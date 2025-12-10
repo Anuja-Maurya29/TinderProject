@@ -5,66 +5,71 @@ import { useDispatch, useSelector } from "react-redux";
 import { addConnection, removeConnection } from "../features/connectionSlice"
 
 const Connections = () => {
- 
-  const connections = useSelector((store) => store.connection);
-  console.log(connections);
+
+
   const dispatch = useDispatch();
   
   const fetchConnections = async () => {
+  
     try {
+       
       dispatch(removeConnection());
-      const connections = await axios.get(BASE_URL + "/api/user/getConnections", {
+      const connectionsData = await axios.get(BASE_URL + "/api/user/getConnections", {
         withCredentials: true,
       });
-      dispatch(addConnection(connections.data.data));
-      //   console.log(connections.data.data);
+      dispatch(addConnection(connectionsData.data.data));
+        // console.log(connectionsData.data.data,"respomnse connection");
     } catch (error) {
       console.log(error);
     }
   };
+
 
   useEffect(() => {
     fetchConnections();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const connections = useSelector((state)=>state.connection.list)
+  console.log(connections,"redux data");
+
   if (!connections) return;
   if (connections.length == 0)
+  {
     return (
       <>
-        <h1 className="flex justify-center text-2xl my-10 text-green-300">
+        <h1 className="flex justify-center text-2xl my-10 text-red-600">
           No conections found
         </h1>
       </>
     );
+  }
+ 
+ 
 
   return (
-    <div className=" text-center my-10">
-      <h1 className="font-bold text-3xl text-pink-400">Connections ({connections.length})</h1>
-      {connections.map((connection) => {
-        const {_id, firstName, lastName, image, age, gender, about } =
-          connection;
+<div className="text-center my-10">
+  <h1 className="font-bold text-3xl text-pink-400 mb-6">
+    Connections ({connections.length})
+  </h1>
 
-        return (
-          <div key={_id} className="flex items-center m-2 p-2  rounded-lg bg-base-300 w-1/2 mx-auto">
-            <div>
-              <img
-                alt="photo"
-                className="w-14 h-14 rounded-full object-contain"
-                src={BASE_URL+image}
-              />
-            </div>
-            <div className="text-left m-4 p-4 ">
-              <h2 className="font-bold text-xl">
-                {firstName + " " + lastName}
-              </h2>
-              {age && gender && <p>{age + " " + gender}</p>}
-              <p>{about}</p>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+
+  <div className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    {connections.map((connection) => {
+      const firstName = connection.firstName;
+      const lastName = connection.lastName;
+
+      return (
+        <div key={connection._id} className="p-4 rounded-xl bg-white shadow-lg border border-gray-200">
+          <h2 className="font-semibold text-lg text-gray-800">
+            {firstName + " " + lastName}
+          </h2>
+        </div>
+      );
+    })}
+  </div>
+</div>
+
   );
 };
 
